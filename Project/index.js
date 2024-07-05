@@ -1,3 +1,7 @@
+// MVC: Model View Controller
+// Controller manipulates the model and Model updates the View
+
+
 const express = require("express");
 
 //const USERS = require("./MOCK_DATA.json");
