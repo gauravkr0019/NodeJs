@@ -11,6 +11,7 @@ const {connectMongoDb}=require("./connection")
 const userRouter= require("./routes/user")
 
 const {logReqRes}=require("./middlewares/index")
+const cors=require('cors')
 
 const app = express();
 const PORT = 8000;
@@ -20,7 +21,9 @@ connectMongoDb("mongodb://localhost:27017/data-app")
 
 
 // Middleware - Plugin
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json())
+app.use(cors())
+// app.use(express.urlencoded({ extended: false }));
 
 app.use(logReqRes("log.txt"))
 

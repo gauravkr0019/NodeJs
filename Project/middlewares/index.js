@@ -6,6 +6,7 @@ function logReqRes(filename){
         // console.log("hello from middleware 1")
         // req.MyUsername="Wills"
         //res.json({msg: "response from middleware 1"})
+        console.log(req.headers)
 
         fs.appendFile(
             filename,
