@@ -1,4 +1,10 @@
-const express = require("express")
+// Uploading files with nodeJs and Multer
+// we need to install a library which helps in files uploads:  npm i multer
+
+const express = require("express");
+const path = require("path")
+const multer = require("multer");
+// const upload = multer({dest:"uploads/"})
 
 // const http=require("http");
 // const url=require("url");  
@@ -6,15 +12,51 @@ const express = require("express")
 
 const app=express();
 
+const storage = multer.diskStorage({
+    destination: function (req,file,cb){
+        return cb(null, './uploads')
+    },
+    filename: function(req,file,cb){
+        return cb(null, `${Date.now()}-${file.originalname}`)
+    }
+})
+
+const upload=multer({storage:storage})
+
+app.set("view engine","ejs");
+app.set("views", path.resolve("./views"))
+
+app.use(express.urlencoded({extended: false}));
 
 app.get("/", (req,res)=>{
-    
-    return res.send("Hello from Homepage")
+    return res.render("homepage")
 })
 
-app.get("/about", (req,res)=>{
-    return res.send(`Hello ${req.query.name}  ${req.query.age}`)
+// // for uploading multiple files
+
+// const cpUpload = upload.fields([{name:'profileImage', maxCount: 1},{name:'coverImage',  maxCount: 1}])
+
+// app.post("/upload", cpUpload, (req, res)=>{
+//     console.log(req.files['profileImage']);
+//     console.log(req.files['coverImage']);
+//     return res.redirect("/")
+// })
+
+app.post("/upload",upload.single('profileImage'), (req, res)=>{
+    console.log(req.body);
+    console.log(req.file);
+
+    return res.redirect("/")
 })
+
+// app.get("/", (req,res)=>{
+    
+//     return res.send("Hello from Homepage")
+// })
+
+// app.get("/about", (req,res)=>{
+//     return res.send(`Hello ${req.query.name}  ${req.query.age}`)
+// })
 
 app.listen(8000, ()=>console.log("Server Started"))
 
